@@ -111,11 +111,15 @@ foreach($cont["options"]["ssl"]["peer_certificate_chain"] as $chaincert)
     $chainparsed = openssl_x509_parse($chaincert);
     $chain_public_key = openssl_get_publickey($chaincert);
     $r = openssl_x509_verify($x509, $chain_public_key);   
-    if ($r==1)
+    if ($r === 1)
     {
         echo $certparsed['subject']['CN'];
         echo " was digitally signed by ";
         echo $chainparsed['subject']['CN']."\n";
+    } elseif ($r === 0) {
+        echo "invalid signature";
+    } else {
+        echo "error checking signature";
     }
 }
 ?>
